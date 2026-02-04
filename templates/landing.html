@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connact.ai — Evidence-first cold outreach</title>
+    <meta name="description" content="Find the right person and send the right cold email—grounded in evidence, with one clear ask and no invented connections.">
+    <meta property="og:title" content="Connact.ai — Evidence-first cold outreach">
+    <meta property="og:description" content="Find the right person and send the right cold email—grounded in evidence, with one clear ask and no invented connections.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%230f766e%27/%3E%3Ctext%20x%3D%2732%27%20y%3D%2742%27%20text-anchor%3D%27middle%27%20font-size%3D%2730%27%20font-family%3D%27ui-sans-serif%2C%20system-ui%2C%20-apple-system%2C%20Segoe%20UI%2C%20Arial%27%20fill%3D%27white%27%20font-weight%3D%27700%27%3EC%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: rgba(17, 24, 39, 0.70);
+            --muted-2: rgba(17, 24, 39, 0.55);
+            --border: rgba(17, 24, 39, 0.14);
+            --surface: #ffffff;
+            --surface-2: #f9fafb;
+            --hero-bg: #0f766e;
+            --hero-bg-2: #115e59;
+            --hero-text: rgba(255, 255, 255, 0.92);
+            --accent: #ff5a1f;
+            --accent-hover: #ff7a4d;
+            --accent-pressed: #f04400;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+            --shadow-sm: 0 12px 32px rgba(0, 0, 0, 0.10);
+            --focus: 0 0 0 3px rgba(255, 90, 31, 0.25);
+            --success: #059669;
+            --danger: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 10px; }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+        }
+
+        .nav {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 16px;
+            min-height: 60px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            justify-self: start;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #0f766e;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 10px;
+            border-radius: 999px;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(17, 24, 39, 0.05);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-actions .nav-link {
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 10px;
+            border-radius: 999px;
+        }
+
+        .nav-actions .nav-link:hover {
+            color: var(--text);
+            background: rgba(17, 24, 39, 0.05);
+        }
+
+        .hero {
+            background: radial-gradient(900px 520px at 70% 35%, rgba(255, 90, 31, 0.18), transparent 55%),
+                linear-gradient(0deg, var(--hero-bg-2), var(--hero-bg));
+            color: #ffffff;
+            padding: 72px 0 64px;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        @media (max-width: 960px) {
+            .nav { grid-template-columns: 1fr auto; grid-template-areas: "brand actions" "links links"; }
+            .brand { grid-area: brand; }
+            .nav-links { grid-area: links; justify-content: flex-start; padding-bottom: 10px; }
+            .nav-actions { grid-area: actions; }
+
+            .hero-inner { grid-template-columns: 1fr; }
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hero h1 {
+            font-family: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            font-size: 56px;
+            line-height: 1.05;
+            margin: 16px 0 0;
+            letter-spacing: -0.02em;
+        }
+
+        @media (max-width: 560px) {
+            .hero h1 { font-size: 42px; }
+        }
+
+        .hero-subtitle {
+            margin-top: 14px;
+            font-size: 16px;
+            line-height: 1.65;
+            max-width: 56ch;
+            color: var(--hero-text);
+        }
+
+        .hero-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .pill-row {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.10);
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            padding: 12px 18px;
+            font-size: 14px;
+            transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+        }
+
+        .btn:focus-visible { outline: none; box-shadow: var(--focus); }
+
+        .btn-lg { padding: 13px 22px; font-size: 15px; }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 14px 30px rgba(255, 90, 31, 0.20);
+        }
+
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn-primary:active { background: var(--accent-pressed); transform: translateY(0px); }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+
+        .btn-muted {
+            background: rgba(17, 24, 39, 0.06);
+            color: rgba(17, 24, 39, 0.92);
+            border-color: rgba(17, 24, 39, 0.12);
+        }
+
+        .btn-muted:hover { background: rgba(17, 24, 39, 0.09); }
+
+        .hero-note {
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .hero-note a {
+            color: rgba(255, 255, 255, 0.95);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 16px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .hero-art {
+            display: grid;
+            place-items: center;
+        }
+
+        .hero-art svg {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            filter: drop-shadow(0 18px 40px rgba(0,0,0,0.18));
+        }
+
+        .preview-card {
+            width: 100%;
+            max-width: 520px;
+            border-radius: 18px;
+            padding: 16px 16px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 18px 46px rgba(0, 0, 0, 0.18);
+        }
+
+        .preview-title {
+            font-size: 12px;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.78);
+            margin-bottom: 10px;
+        }
+
+        .preview-row {
+            display: grid;
+            grid-template-columns: 132px 1fr;
+            gap: 12px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .preview-row:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .preview-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .preview-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .preview-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        @media (max-width: 560px) {
+            .preview-row { grid-template-columns: 1fr; }
+        }
+
+        .section {
+            padding: 54px 0;
+        }
+
+        .section h2 {
+            font-family: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            letter-spacing: -0.02em;
+            font-size: 40px;
+            margin: 0 0 12px;
+        }
+
+        @media (max-width: 560px) {
+            .section h2 { font-size: 34px; }
+        }
+
+        .section p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 70ch;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .notice {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.55;
+            border: 1px solid transparent;
+            margin-top: 14px;
+        }
+
+        .notice-success {
+            background: rgba(5, 150, 105, 0.10);
+            border-color: rgba(5, 150, 105, 0.22);
+            color: rgba(6, 95, 70, 1);
+        }
+
+        .notice-error {
+            background: rgba(220, 38, 38, 0.08);
+            border-color: rgba(220, 38, 38, 0.20);
+            color: rgba(153, 27, 27, 1);
+        }
+
+        .notice-info {
+            background: rgba(17, 24, 39, 0.04);
+            border-color: rgba(17, 24, 39, 0.10);
+            color: rgba(17, 24, 39, 0.80);
+        }
+
+        .micro-flow {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            background: rgba(17, 24, 39, 0.03);
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .micro-title {
+            font-size: 12px;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: var(--muted-2);
+            white-space: nowrap;
+        }
+
+        .micro-steps {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .micro-step {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .micro-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            background: rgba(15, 118, 110, 0.10);
+            color: #0f766e;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .micro-alt {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .micro-alt a {
+            color: var(--text);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        @media (max-width: 560px) {
+            .micro-flow { flex-direction: column; }
+            .micro-alt { margin-left: 0; }
+        }
+
+        .access-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 920px) {
+            .access-grid { grid-template-columns: 1fr; }
+        }
+
+        .form {
+            display: grid;
+            gap: 10px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            background: var(--surface-2);
+        }
+
+        .form h3 {
+            margin: 0;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+        }
+
+        .form label {
+            font-size: 12px;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: var(--muted-2);
+        }
+
+        .form input {
+            width: 100%;
+            padding: 12px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(17, 24, 39, 0.16);
+            background: #ffffff;
+            font-size: 15px;
+            color: var(--text);
+            transition: box-shadow 0.12s ease, border-color 0.12s ease;
+        }
+
+        .form input:focus {
+            outline: none;
+            border-color: rgba(255, 90, 31, 0.45);
+            box-shadow: var(--focus);
+        }
+
+        .form .hint {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .form .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .fineprint {
+            margin-top: 14px;
+            color: var(--muted-2);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 920px) {
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+
+        .feature {
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            background: var(--surface);
+        }
+
+        .feature svg { width: 40px; height: 40px; }
+
+        .feature h3 {
+            margin: 12px 0 6px;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .steps {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 14px;
+            align-items: start;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            background: var(--surface);
+        }
+
+        .step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(15, 118, 110, 0.10);
+            color: #0f766e;
+            font-weight: 800;
+        }
+
+        .step h3 {
+            margin: 0;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .step p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 920px) {
+            .example-grid { grid-template-columns: 1fr; }
+        }
+
+        .example h3 {
+            margin: 0 0 10px;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+        }
+
+        .example pre {
+            margin: 0;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            background: #0b1220;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 12.5px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .footer {
+            border-top: 1px solid rgba(17, 24, 39, 0.08);
+            padding: 26px 0;
+            color: var(--muted-2);
+            font-size: 13px;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: var(--muted);
+        }
+
+        .footer a:hover { color: var(--text); text-decoration: underline; }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: grid;
+            place-items: center;
+            padding: 18px;
+            background: rgba(17, 24, 39, 0.58);
+        }
+
+        .modal-dialog {
+            width: min(720px, 100%);
+            max-height: calc(100vh - 36px);
+            overflow: auto;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(17, 24, 39, 0.14);
+            background: var(--surface);
+            box-shadow: 0 26px 90px rgba(15, 23, 42, 0.28);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .modal-kicker {
+            font-size: 12px;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: var(--muted-2);
+            margin-bottom: 6px;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-family: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            letter-spacing: -0.02em;
+            font-size: 32px;
+        }
+
+        @media (max-width: 560px) {
+            .modal-title { font-size: 28px; }
+        }
+
+        .modal-close {
+            flex: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(17, 24, 39, 0.14);
+            background: rgba(17, 24, 39, 0.03);
+            color: rgba(17, 24, 39, 0.70);
+            cursor: pointer;
+            transition: box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(17, 24, 39, 0.06);
+            border-color: rgba(17, 24, 39, 0.20);
+        }
+
+        .modal-close:focus {
+            outline: none;
+            box-shadow: var(--focus);
+        }
+
+        .modal-tabs {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 999px;
+            background: rgba(17, 24, 39, 0.04);
+            border: 1px solid rgba(17, 24, 39, 0.10);
+        }
+
+        .modal-tab {
+            flex: 1;
+            appearance: none;
+            border: none;
+            background: transparent;
+            border-radius: 999px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--muted);
+            cursor: pointer;
+            transition: box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+        }
+
+        .modal-tab.is-selected {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal-panel {
+            margin-top: 14px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .modal-subtitle {
+            margin: 10px 0 0;
+            max-width: 60ch;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .btn { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    {% set root_url = url_for('index') %}
+    {% set safe_next = next_url if next_url is defined else None %}
+    {% set access_next = access_next_url if access_next_url is defined else (root_url ~ '#access') %}
+    {% if safe_next and safe_next != root_url %}
+        {% set login_href = url_for('login', next=safe_next) %}
+        {% set signup_href = url_for('signup', next=safe_next) %}
+    {% else %}
+        {% set login_href = url_for('login') %}
+        {% set signup_href = url_for('signup') %}
+    {% endif %}
+    {% set access_href = '#access' %}
+
+    {% set is_gated = (invite_only or invite_required_for_login) %}
+    {% if invite_ok %}
+        {% set nav_primary_label = 'Sign in' %}
+        {% set nav_primary_href = login_href %}
+        {% set nav_primary_focus = '' %}
+    {% elif is_gated %}
+        {% set nav_primary_label = 'Join waitlist' %}
+        {% set nav_primary_href = access_href %}
+        {% set nav_primary_focus = 'waitlist' %}
+    {% else %}
+        {% set nav_primary_label = 'Create account' %}
+        {% set nav_primary_href = signup_href %}
+        {% set nav_primary_focus = '' %}
+    {% endif %}
+
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="/" aria-label="Connact.ai">
+                <span class="brand-mark" aria-hidden="true">C</span>
+                <span class="brand-name">Connact.ai</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Navigation">
+                <a href="#product">Product</a>
+                <a href="#how">How</a>
+                <a href="#privacy">Privacy</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a class="nav-link" href="{{ login_href }}">Sign in</a>
+                <a class="btn btn-primary" href="{{ nav_primary_href }}" {% if nav_primary_focus %}data-focus="{{ nav_primary_focus }}"{% endif %}>{{ nav_primary_label }}</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="hero-copy">
+                    <div class="kicker">Private beta · Evidence-first</div>
+                    <h1>Find the right person,<br>send the right email.</h1>
+                    <p class="hero-subtitle">
+                        Connact helps you build a shortlist with sources, then generate a first cold email that’s structured, specific, and grounded in real evidence.
+                    </p>
+
+                    <div class="hero-actions">
+                        {% if invite_ok %}
+                        <a class="btn btn-primary btn-lg" href="{{ login_href }}">Sign in</a>
+                        <a class="btn btn-secondary btn-lg" href="#how">How it works</a>
+                        {% elif is_gated %}
+                        <a class="btn btn-primary btn-lg" href="{{ access_href }}" data-focus="waitlist">Join waitlist</a>
+                        <a class="btn btn-secondary btn-lg" href="{{ access_href }}" data-focus="invite">Have an invite?</a>
+                        {% else %}
+                        <a class="btn btn-primary btn-lg" href="{{ signup_href }}">Create account</a>
+                        <a class="btn btn-secondary btn-lg" href="{{ login_href }}">Sign in</a>
+                        {% endif %}
+                    </div>
+
+                    {% if is_gated and not invite_ok %}
+                    <div class="hero-note">
+                        Returning user? <a href="{{ login_href }}">Sign in</a> directly. New here? Join the waitlist.
+                    </div>
+                    {% endif %}
+
+                    <div class="pill-row" aria-label="Highlights">
+                        <div class="pill">Match score + evidence</div>
+                        <div class="pill">No invented connections</div>
+                        <div class="pill">One clear ask</div>
+                    </div>
+                </div>
+
+                <div class="hero-side">
+                    <div class="hero-art" aria-hidden="true">
+                        <svg viewBox="0 0 560 420" role="img" aria-label="">
+                            <defs>
+                                <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1">
+                                    <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+                                    <stop offset="1" stop-color="#ffffff" stop-opacity="0.82"/>
+                                </linearGradient>
+                            <linearGradient id="accent" x1="0" x2="1" y1="0" y2="0">
+                                <stop offset="0" stop-color="#ff5a1f"/>
+                                <stop offset="1" stop-color="#ffb38f"/>
+                            </linearGradient>
+                        </defs>
+
+                        <rect x="48" y="56" width="462" height="308" rx="26" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.20)"/>
+
+                        <g transform="translate(92 92)">
+                            <rect x="0" y="0" width="300" height="240" rx="18" fill="url(#paper)" stroke="rgba(17,24,39,0.16)"/>
+                            <path d="M24 52h252" stroke="rgba(17,24,39,0.18)" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M24 88h196" stroke="rgba(17,24,39,0.18)" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M24 124h232" stroke="rgba(17,24,39,0.18)" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M24 160h160" stroke="rgba(17,24,39,0.18)" stroke-width="6" stroke-linecap="round"/>
+                            <rect x="24" y="188" width="128" height="24" rx="12" fill="rgba(15,118,110,0.14)"/>
+                            <rect x="164" y="188" width="102" height="24" rx="12" fill="rgba(255,90,31,0.22)"/>
+                        </g>
+
+                        <g transform="translate(344 150)">
+                            <circle cx="88" cy="88" r="66" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>
+                            <circle cx="82" cy="82" r="52" fill="rgba(0,0,0,0)" stroke="rgba(255,255,255,0.85)" stroke-width="10"/>
+                            <path d="M122 122l52 52" stroke="rgba(255,255,255,0.85)" stroke-width="12" stroke-linecap="round"/>
+                            <path d="M62 82h40" stroke="url(#accent)" stroke-width="10" stroke-linecap="round"/>
+                        </g>
+
+                        <g transform="translate(120 326)">
+                            <path d="M0 18c48 24 100 24 156 0" fill="none" stroke="rgba(255,255,255,0.42)" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M184 18c42 18 86 18 132 0" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="4" stroke-linecap="round"/>
+                        </g>
+                        </svg>
+                    </div>
+
+                    <div class="preview-card" role="note" aria-label="Example output preview">
+                        <div class="preview-title">Example output</div>
+                        <div class="preview-row">
+                            <div class="preview-label">Recommendation</div>
+                            <div class="preview-text">Match score + reasoning + evidence links + explicit uncertainty.</div>
+                        </div>
+                        <div class="preview-row">
+                            <div class="preview-label">Email</div>
+                            <div class="preview-text">Subject → why them (evidence) → value → one clear ask → opt‑out.</div>
+                        </div>
+                        <a class="preview-link" href="#example">See full example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="product">
+            <div class="container">
+                <h2>What you get</h2>
+                <p class="lead">A focused workflow for cold outreach: shortlist with evidence → one clean first email.</p>
+
+                <div class="feature-grid">
+                    <div class="feature">
+                        <svg viewBox="0 0 48 48" aria-hidden="true">
+                            <rect x="6" y="8" width="28" height="32" rx="6" fill="rgba(15,118,110,0.12)" stroke="rgba(15,118,110,0.38)"/>
+                            <path d="M14 18h14M14 24h10M14 30h16" stroke="rgba(15,118,110,0.85)" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M34 16l8 8" stroke="rgba(255,90,31,0.9)" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="38" cy="30" r="6" fill="rgba(255,90,31,0.18)" stroke="rgba(255,90,31,0.9)" stroke-width="3"/>
+                        </svg>
+                        <h3>Find people with evidence</h3>
+                        <p>Each candidate includes match score, reasoning, and sources. Uncertainty is labeled when data is thin.</p>
+                    </div>
+
+                    <div class="feature">
+                        <svg viewBox="0 0 48 48" aria-hidden="true">
+                            <rect x="6" y="12" width="36" height="26" rx="8" fill="rgba(17,24,39,0.04)" stroke="rgba(17,24,39,0.22)"/>
+                            <path d="M10 16l14 12 14-12" fill="none" stroke="rgba(17,24,39,0.55)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 30h20" stroke="rgba(255,90,31,0.9)" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <h3>Generate a structured email</h3>
+                        <p>Why them → value exchange → one clear ask → opt‑out. Personalization comes from evidence, not fluff.</p>
+                    </div>
+
+                    <div class="feature">
+                        <svg viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M14 34c0-8 6-14 14-14h10" fill="none" stroke="rgba(15,118,110,0.85)" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M32 12l10 8-10 8" fill="none" stroke="rgba(15,118,110,0.85)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="34" r="8" fill="rgba(255,90,31,0.16)" stroke="rgba(255,90,31,0.85)" stroke-width="3"/>
+                            <path d="M15.5 34l1.8 1.9L20.8 32" fill="none" stroke="rgba(255,90,31,0.9)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3>Reusable profile</h3>
+                        <p>We persist your sender profile + preferences so you don’t repeat input every time you log in.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="how">
+            <div class="container">
+                <h2>How it works</h2>
+                <p class="lead">Stay evidence-first. Keep the ask clear. Iterate fast.</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div>
+                            <h3>Describe who you want to reach</h3>
+                            <p>Role + keywords + constraints. Add documents or links when you have them.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div>
+                            <h3>Review candidates with sources</h3>
+                            <p>Pick targets based on match score, reasoning, and evidence. Flag uncertainty instead of guessing.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div>
+                            <h3>Generate the first email</h3>
+                            <p>Subject → why them (evidence) → value exchange → one clear ask → opt‑out.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="example">
+            <div class="container">
+                <h2>Example</h2>
+                <p class="lead">Clear structure. Verifiable details. No invented connections.</p>
+
+                <div class="example-grid">
+	                    <div class="example">
+	                        <h3>Recommendation output</h3>
+	                        <pre>match_score: 0.86
+match_reason: "Research overlaps in X; your project Y matches their recent work."
+evidence:
+  - https://example.com/paper
+  - https://example.com/lab
+uncertainty: "Title may be outdated; verify current role."</pre>
+	                    </div>
+
+                    <div class="example">
+                        <h3>Email output</h3>
+                        <pre>Subject: Quick question about &lt;topic&gt;
+
+Hi &lt;Name&gt; — I’m reaching out because &lt;why them (evidence)&gt;.
+
+In short, I’m &lt;who you are&gt; and I’m working on &lt;what you’re doing&gt;. I think I could help by &lt;value&gt;.
+
+Would you be open to a 15‑minute chat next week? If easier, I can send 2–3 times and work around your schedule.
+
+If now isn’t a good time, no worries at all — thanks for reading.</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="privacy">
+            <div class="container">
+                <h2>Privacy</h2>
+                <p class="lead">We optimize for verifiable context and user control.</p>
+
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>What we store</h3>
+                        <p>Per-user sender profile + preferences to reduce repeated inputs. Waitlist emails are only for access updates.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>What we don’t do</h3>
+                        <p>No invented relationships. No fake “mutual connections.” Uncertainty is explicitly labeled.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Access control</h3>
+                        <p>During private beta, access is gated by invite codes. Once you’re in, you won’t re-enter the code every time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="access_modal_overlay" hidden>
+        <div class="modal-dialog" id="access_modal" role="dialog" aria-modal="true" aria-labelledby="access_modal_title" aria-hidden="true">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-kicker">Private beta</div>
+                    <h2 class="modal-title" id="access_modal_title">Get access</h2>
+                    <p class="modal-subtitle">
+                        Join the waitlist or enter an invite code. Returning users can sign in directly.
+                    </p>
+                </div>
+                <button class="modal-close" type="button" id="access_modal_close" aria-label="Close">
+                    <span aria-hidden="true">✕</span>
+                </button>
+            </div>
+
+            {% if message %}
+            <div class="notice notice-success">{{ message }}</div>
+            {% endif %}
+            {% if error %}
+            <div class="notice notice-error">{{ error }}</div>
+            {% endif %}
+
+            {% if invite_ok %}
+            <div class="notice notice-info">Access is unlocked for this browser. You can sign in anytime.</div>
+
+            <div class="micro-flow" aria-label="Quick start">
+                <div class="micro-title">Next steps</div>
+                <div class="micro-steps">
+                    <div class="micro-step"><span class="micro-badge">1</span>Sign in</div>
+                    <div class="micro-step"><span class="micro-badge">2</span>Build a shortlist</div>
+                    <div class="micro-step"><span class="micro-badge">3</span>Send one clear ask</div>
+                </div>
+            </div>
+
+            <div class="modal-panel">
+                <div class="modal-actions">
+                    <a class="btn btn-primary btn-lg" href="{{ login_href }}">Sign in</a>
+                    <a class="btn btn-secondary btn-lg" href="{{ signup_href }}">Create account</a>
+                </div>
+            </div>
+
+            {% else %}
+            {% if invite_required_for_login %}
+            <div class="notice notice-info">Private beta: new users need an invite code. If you already have access, just sign in—no code needed.</div>
+            {% elif invite_only %}
+            <div class="notice notice-info">Invite-only during beta. Join the waitlist (or use an invite code) to create a new account.</div>
+            {% else %}
+            <div class="notice notice-info">Join the waitlist (or use an invite code if you have one).</div>
+            {% endif %}
+
+            <div class="micro-flow" aria-label="Quick start">
+                <div class="micro-title">Start in 3 steps</div>
+                <div class="micro-steps">
+                    <div class="micro-step"><span class="micro-badge">1</span>Get access</div>
+                    <div class="micro-step"><span class="micro-badge">2</span>Create account</div>
+                    <div class="micro-step"><span class="micro-badge">3</span>Run the wizard</div>
+                </div>
+                <div class="micro-alt">Returning? <a href="{{ login_href }}">Sign in</a></div>
+            </div>
+
+            <div class="modal-tabs" role="tablist" aria-label="Access options">
+                <button class="modal-tab is-selected" type="button" data-access-tab="waitlist" role="tab" aria-selected="true">Join waitlist</button>
+                <button class="modal-tab" type="button" data-access-tab="invite" role="tab" aria-selected="false">Have an invite?</button>
+            </div>
+
+            <form class="form modal-panel" id="access_panel_waitlist" method="POST" action="/waitlist">
+                <h3>Join the waitlist</h3>
+                <input type="hidden" name="next" value="{{ access_next }}">
+                <div>
+                    <label for="waitlist_email">Email</label>
+                    <input id="waitlist_email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+                <p class="hint">We’ll email you when we open more access. No spam.</p>
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Join waitlist</button>
+                    <a class="btn btn-muted" href="{{ login_href }}">Sign in</a>
+                </div>
+            </form>
+
+            <form class="form modal-panel" id="access_panel_invite" method="POST" action="/access" hidden>
+                <h3>Have an invite code?</h3>
+                <input type="hidden" name="next" value="{{ access_next }}">
+                <div>
+                    <label for="invite_code">Invite code</label>
+                    <input id="invite_code" name="invite_code" type="text" placeholder="Enter invite code" autocomplete="off" {% if invite_required_for_login %}required{% endif %}>
+                </div>
+                <p class="hint">We’ll remember it for this browser after a successful unlock.</p>
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Unlock access</button>
+                    <a class="btn btn-muted" href="{{ login_href }}">Sign in</a>
+                </div>
+            </form>
+            {% endif %}
+
+            <div class="fineprint">
+                By continuing you agree not to fabricate relationships in generated emails. When evidence is missing, Connact labels uncertainty instead of guessing.
+            </div>
+
+            <noscript>
+                <div class="notice notice-info" style="margin-top: 14px;">
+                    JavaScript is required to open the access dialog. You can still use <a href="/access">/access</a>.
+                </div>
+            </noscript>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div>© Connact.ai · Private beta</div>
+            <div>
+                {% if invite_ok %}
+                    <a href="{{ signup_href }}">Create account</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="{{ login_href }}">Sign in</a>
+                {% elif is_gated %}
+                    <a href="#access" data-focus="waitlist">Join waitlist</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="#access" data-focus="invite">Have an invite?</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="{{ login_href }}">Sign in</a>
+                {% else %}
+                    <a href="{{ signup_href }}">Create account</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="{{ login_href }}">Sign in</a>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const modalOverlay = document.getElementById('access_modal_overlay');
+            const modalDialog = document.getElementById('access_modal');
+            const closeButton = document.getElementById('access_modal_close');
+            if (!modalOverlay || !modalDialog) return;
+
+            const inviteInput = document.getElementById('invite_code');
+            const waitlistInput = document.getElementById('waitlist_email');
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const shouldAutoOpen = {{ 'true' if message or error else 'false' }};
+            const hasMessage = {{ 'true' if message else 'false' }};
+            const hasError = {{ 'true' if error else 'false' }};
+            const isGated = {{ 'true' if invite_only or invite_required_for_login else 'false' }};
+            const inviteOk = {{ 'true' if invite_ok else 'false' }};
+
+            const tabs = Array.from(modalDialog.querySelectorAll('[data-access-tab]'));
+            const panels = {
+                waitlist: document.getElementById('access_panel_waitlist'),
+                invite: document.getElementById('access_panel_invite'),
+            };
+
+            let lastActiveElement = null;
+
+            function resolveDefaultMode() {
+                if (inviteOk) return null;
+                if (hasError) return 'invite';
+                if (isGated) return 'waitlist';
+                return 'invite';
+            }
+
+            function setMode(mode) {
+                if (inviteOk) return;
+                const resolvedMode = mode || resolveDefaultMode() || 'invite';
+                if (panels.waitlist) panels.waitlist.hidden = resolvedMode !== 'waitlist';
+                if (panels.invite) panels.invite.hidden = resolvedMode !== 'invite';
+
+                tabs.forEach((tab) => {
+                    const tabMode = tab.getAttribute('data-access-tab') || '';
+                    const selected = tabMode === resolvedMode;
+                    tab.classList.toggle('is-selected', selected);
+                    tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+                });
+
+                const el = (resolvedMode === 'invite') ? inviteInput : waitlistInput;
+                if (!el) return;
+                window.setTimeout(() => {
+                    try { el.focus({ preventScroll: true }); } catch (_) { el.focus(); }
+                }, prefersReducedMotion ? 0 : 80);
+            }
+
+            function getFocusableElements() {
+                return Array.from(
+                    modalDialog.querySelectorAll(
+                        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+                    ),
+                ).filter((el) => {
+                    if (!(el instanceof HTMLElement)) return false;
+                    if (el.closest('[hidden]')) return false;
+                    if (el.getAttribute('aria-hidden') === 'true') return false;
+                    return true;
+                });
+            }
+
+            function openModal(mode) {
+                if (!modalOverlay.hidden) {
+                    setMode(mode);
+                    return;
+                }
+                lastActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+                modalOverlay.hidden = false;
+                modalDialog.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+
+                if (window.location.hash !== '#access') {
+                    history.replaceState(null, '', window.location.pathname + window.location.search + '#access');
+                }
+
+                setMode(mode);
+
+                if (inviteOk) {
+                    const focusables = getFocusableElements();
+                    const fallback = closeButton || focusables[0];
+                    if (fallback) {
+                        window.setTimeout(() => {
+                            try { fallback.focus({ preventScroll: true }); } catch (_) { fallback.focus(); }
+                        }, 0);
+                    }
+                }
+            }
+
+            function closeModal() {
+                if (modalOverlay.hidden) return;
+                modalOverlay.hidden = true;
+                modalDialog.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-open');
+                if (window.location.hash === '#access') {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+                if (lastActiveElement) {
+                    try { lastActiveElement.focus({ preventScroll: true }); } catch (_) { lastActiveElement.focus(); }
+                }
+                lastActiveElement = null;
+            }
+
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeModal);
+            }
+
+            tabs.forEach((tab) => {
+                tab.addEventListener('click', () => {
+                    const mode = tab.getAttribute('data-access-tab') || '';
+                    setMode(mode || null);
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (modalOverlay.hidden) return;
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+                if (e.key !== 'Tab') return;
+                const focusables = getFocusableElements();
+                if (!focusables.length) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+                const active = document.activeElement;
+                if (!(active instanceof HTMLElement) || !modalDialog.contains(active)) {
+                    e.preventDefault();
+                    first.focus();
+                    return;
+                }
+                if (e.shiftKey && active === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && active === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                if (!(target instanceof Element)) return;
+                const link = target.closest('a[href^="#"]');
+                if (!link) return;
+                const href = link.getAttribute('href') || '';
+                if (href !== '#access') return;
+                e.preventDefault();
+                const mode = link.getAttribute('data-focus') || '';
+                openModal(mode || null);
+            });
+
+            window.addEventListener('hashchange', () => {
+                if (window.location.hash === '#access') {
+                    openModal(resolveDefaultMode());
+                } else {
+                    closeModal();
+                }
+            });
+
+            if (window.location.hash === '#access' || shouldAutoOpen) {
+                openModal(resolveDefaultMode());
+            }
+        })();
+    </script>
+</body>
+</html>

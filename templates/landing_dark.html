@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connact.ai | Automate Your IB Networking</title>
+    <meta name="description" content="The AI agent that finds targets, drafts personalized emails, and manages follow-ups. Stop pasting templates. Start connecting.">
+    <meta property="og:title" content="Connact.ai | Automate Your IB Networking">
+    <meta property="og:description" content="The AI agent that finds targets, drafts personalized emails, and manages follow-ups. Stop pasting templates. Start connecting.">
+    <meta property="og:type" content="website">
+    <style>
+        :root {
+            --bg: #0D0B14;
+            --bg-2: #12101a;
+            --panel: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.10);
+            --muted: #A0A0B0;
+            --muted-2: #505060;
+            --green: #2ECA7F;
+            --purple: #7B61FF;
+            --text: #ffffff;
+            --shadow-green: 0 24px 80px rgba(46, 202, 127, 0.18);
+            --shadow-purple: 0 24px 80px rgba(123, 97, 255, 0.18);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        ::selection { background: rgba(46, 202, 127, 0.30); }
+
+        a { color: inherit; text-decoration: none; }
+        a:hover { text-decoration: none; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #1A1625; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--green); }
+
+        [hidden] { display: none !important; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: var(--panel);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: linear-gradient(to bottom, var(--bg), var(--bg), var(--bg-2));
+        }
+
+        .particles {
+            position: absolute;
+            inset: 0;
+            opacity: 0.40;
+            pointer-events: none;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        .glow-top {
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: rgba(123, 97, 255, 0.05);
+            filter: blur(150px);
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-bottom {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 500px;
+            height: 500px;
+            background: rgba(46, 202, 127, 0.05);
+            filter: blur(120px);
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(13, 11, 20, 0.80);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-inner {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-inner { height: 80px; }
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: white;
+            font-size: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .logo { font-size: 24px; }
+        }
+
+        .logo-caret {
+            width: 1.1em;
+            height: 1em;
+            margin-bottom: 0.1em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-login {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--muted);
+            transition: color 0.15s ease;
+        }
+
+        .nav-login:hover { color: #ffffff; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 10px 20px;
+            background: var(--green);
+            color: var(--bg);
+            font-size: 14px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+            box-shadow: 0 12px 40px rgba(46, 202, 127, 0.20);
+        }
+
+        .btn-primary:hover {
+            background: #39df8f;
+            transform: scale(1.05);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 96px 0 48px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            font-size: 48px;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 96px; }
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to right, var(--green), var(--purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            margin: 18px auto 0;
+            max-width: 48rem;
+            font-size: 18px;
+            line-height: 1.65;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .hero-subtitle { font-size: 24px; }
+        }
+
+        .alerts {
+            max-width: 44rem;
+            margin: 18px auto 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 14px;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .alert-success {
+            border-color: rgba(46, 202, 127, 0.28);
+            background: rgba(46, 202, 127, 0.10);
+        }
+
+        .alert-error {
+            border-color: rgba(248, 113, 113, 0.30);
+            background: rgba(248, 113, 113, 0.10);
+        }
+
+        .gate-wrap {
+            max-width: 36rem;
+            margin: 0 auto;
+            padding-top: 16px;
+            min-height: 180px;
+        }
+
+        .gate-panel {
+            display: grid;
+            gap: 18px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .gate-form {
+            width: 100%;
+            position: relative;
+        }
+
+        .gate-form::before {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 22px;
+            filter: blur(10px);
+            opacity: 0.20;
+            transition: opacity 0.3s ease;
+            background: linear-gradient(to right, var(--green), var(--purple));
+        }
+
+        .gate[data-mode="invite"] .gate-form::before {
+            background: linear-gradient(to right, var(--purple), var(--green));
+        }
+
+        .gate-form:focus-within::before {
+            opacity: 0.40;
+        }
+
+        .gate-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(26, 22, 37, 0.80);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        @media (min-width: 640px) {
+            .gate-inner { flex-direction: row; align-items: center; }
+        }
+
+        .gate-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 16px 18px;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .gate-input::placeholder { color: var(--muted-2); }
+
+        .gate-submit {
+            border: none;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: transform 0.16s ease, filter 0.16s ease, background 0.16s ease;
+            white-space: nowrap;
+        }
+
+        .gate[data-mode="waitlist"] .gate-submit {
+            background: var(--green);
+            color: var(--bg);
+            box-shadow: 0 18px 60px rgba(46, 202, 127, 0.20);
+        }
+
+        .gate[data-mode="invite"] .gate-submit {
+            background: var(--purple);
+            color: #ffffff;
+            box-shadow: 0 18px 60px rgba(123, 97, 255, 0.20);
+        }
+
+        .gate-submit:hover { transform: scale(1.02); filter: brightness(1.03); }
+        .gate-submit:active { transform: scale(0.95); }
+
+        .invite-input {
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .gate-switch,
+        .gate-back {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted-2);
+            transition: color 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gate-switch:hover { color: var(--purple); }
+        .gate-back:hover { color: var(--green); }
+
+        .gate-switch .switch-underline {
+            text-decoration: underline;
+            text-decoration-color: rgba(123, 97, 255, 0.30);
+            text-underline-offset: 4px;
+            color: var(--muted);
+        }
+
+        .gate-back {
+            text-decoration: underline;
+            text-decoration-color: rgba(46, 202, 127, 0.30);
+            text-underline-offset: 4px;
+            color: var(--muted);
+        }
+
+        .unlock-cta {
+            margin-top: 14px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.16s ease, background 0.16s ease;
+        }
+
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.10); transform: scale(1.03); }
+        .btn-secondary:active { transform: scale(0.97); }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 42px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.20;
+            animation: bounce 1.8s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+
+        .scroll-mouse {
+            width: 24px;
+            height: 40px;
+            border-radius: 999px;
+            border: 2px solid rgba(255,255,255,0.80);
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .scroll-dot {
+            width: 4px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.90);
+        }
+
+        .section {
+            padding: 120px 0;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .section { padding: 168px 0; }
+        }
+
+        .feature-stack { display: grid; gap: 160px; }
+
+        .feature-row {
+            display: grid;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .feature-row {
+                grid-template-columns: 1.2fr 0.8fr;
+                gap: 96px;
+            }
+            .feature-row.reverse {
+                grid-template-columns: 0.8fr 1.2fr;
+            }
+            .feature-row.reverse .feature-copy { order: 2; }
+            .feature-row.reverse .feature-media { order: 1; }
+        }
+
+        .feature-copy h2 {
+            margin: 0;
+            font-size: 40px;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 900;
+        }
+
+        @media (min-width: 768px) {
+            .feature-copy h2 { font-size: 56px; }
+        }
+
+        @media (min-width: 1024px) {
+            .feature-copy h2 { font-size: 76px; }
+        }
+
+        .feature-copy .accent-green { color: var(--green); }
+        .feature-copy .accent-purple { color: var(--purple); }
+
+        .feature-copy p {
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.65;
+            font-weight: 600;
+            max-width: 38rem;
+        }
+
+        @media (min-width: 768px) {
+            .feature-copy p { font-size: 24px; }
+        }
+
+        .bullets {
+            margin-top: 32px;
+            display: grid;
+            gap: 28px;
+        }
+
+        .bullet {
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        .bullet-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            display: grid;
+            place-items: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+            box-shadow: 0 16px 50px rgba(0,0,0,0.30);
+        }
+
+        .bullet:hover .bullet-icon {
+            transform: scale(1.10);
+            border-color: rgba(46, 202, 127, 0.40);
+            background: rgba(46, 202, 127, 0.10);
+        }
+
+        .bullet h4 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            transition: color 0.2s ease;
+        }
+
+        .bullet:hover h4 { color: var(--green); }
+
+        .bullet p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .feature-media {
+            width: 100%;
+        }
+
+        .media-shell {
+            position: relative;
+        }
+
+        .media-glow {
+            position: absolute;
+            inset: -16px;
+            border-radius: 40px;
+            filter: blur(48px);
+            opacity: 0.10;
+            transition: opacity 0.6s ease;
+        }
+
+        .media-shell:hover .media-glow { opacity: 0.20; }
+
+        .media-card {
+            position: relative;
+            border-radius: 32px;
+            border: 1px solid rgba(46, 202, 127, 0.30);
+            background: #1A1625;
+            overflow: hidden;
+            box-shadow: 0 0 80px -20px rgba(46, 202, 127, 0.40);
+            aspect-ratio: 4 / 5;
+        }
+
+        @media (min-width: 768px) {
+            .media-card { aspect-ratio: 16 / 9; }
+        }
+
+        .media-card.purple {
+            border-color: rgba(123, 97, 255, 0.30);
+            box-shadow: 0 0 80px -20px rgba(123, 97, 255, 0.40);
+        }
+
+        .media-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.60);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .media-label span {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.90);
+        }
+
+        .ping {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #ef4444;
+            position: relative;
+        }
+
+        .ping::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            background: #ef4444;
+            opacity: 0.75;
+            animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes ping {
+            0% { transform: scale(1); opacity: 0.75; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--purple);
+            box-shadow: 0 0 10px rgba(123, 97, 255, 0.9);
+            animation: pulse-dot 1.6s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.25); }
+        }
+
+        .media-placeholder {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(700px 420px at 25% 25%, rgba(46, 202, 127, 0.18), transparent 60%),
+                        radial-gradient(560px 360px at 80% 40%, rgba(123, 97, 255, 0.18), transparent 60%),
+                        linear-gradient(135deg, rgba(13,11,20,0.30), rgba(13,11,20,0.00) 60%);
+        }
+
+        .media-vignette {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top right, rgba(13,11,20,0.60), transparent 55%);
+            pointer-events: none;
+        }
+
+        .testimonials {
+            padding: 128px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .testimonials h2 {
+            margin: 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        @media (min-width: 768px) {
+            .testimonials h2 { font-size: 40px; }
+        }
+
+        .marquee {
+            position: relative;
+            display: flex;
+            overflow: hidden;
+            margin-top: 48px;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 32px;
+            white-space: nowrap;
+            padding: 16px 0;
+        }
+
+        .testimonial-card {
+            width: 350px;
+            padding: 32px;
+            border-radius: 28px;
+            transition: transform 0.18s ease, background 0.18s ease;
+            cursor: default;
+            white-space: normal;
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .stars { color: var(--green); font-size: 14px; }
+
+        .quote {
+            margin: 14px 0 0;
+            font-weight: 600;
+            line-height: 1.6;
+            font-style: italic;
+            font-size: 18px;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .author {
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .author-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: linear-gradient(to top right, var(--purple), var(--green));
+            opacity: 0.5;
+        }
+
+        .logo-playground {
+            padding: 128px 0;
+            text-align: center;
+        }
+
+        .logo-playground h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .logo-playground p {
+            margin: 12px auto 0;
+            color: var(--muted);
+            max-width: 44rem;
+        }
+
+        .playground-card {
+            margin: 48px auto 0;
+            padding: 80px 24px;
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: #1A1625;
+            position: relative;
+            overflow: hidden;
+            max-width: 820px;
+        }
+
+        .playground-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .logo-stage {
+            position: relative;
+            display: inline-flex;
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .anim-pulse { animation: stage-pulse 1.6s infinite; }
+        .anim-bounce { animation: stage-bounce 1.2s infinite; }
+        .anim-spin { animation: stage-spin 3s linear infinite; }
+        .anim-wiggle { animation: stage-wiggle 1s ease-in-out infinite; }
+        .anim-glow { animation: stage-glow 2s ease-in-out infinite; }
+
+        @keyframes stage-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+
+        @keyframes stage-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes stage-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes stage-wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes stage-glow {
+            0%, 100% { filter: drop-shadow(0 0 5px #00F2FF); }
+            50% { filter: drop-shadow(0 0 20px #0072FF); }
+        }
+
+        .anim-buttons {
+            margin-top: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .anim-btn {
+            border-radius: 999px;
+            padding: 10px 18px;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: transparent;
+            color: rgba(255,255,255,0.80);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+        }
+
+        .anim-btn:hover { background: rgba(255,255,255,0.05); transform: translateY(-1px); }
+        .anim-btn.is-active { background: #ffffff; color: #000000; }
+
+        .anim-btn-reset {
+            border-color: rgba(239, 68, 68, 0.30);
+            color: rgba(248, 113, 113, 0.90);
+        }
+
+        .anim-btn-reset:hover { background: rgba(239, 68, 68, 0.10); }
+
+        .footer {
+            padding: 80px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg);
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 48px;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 48px;
+        }
+
+        @media (min-width: 640px) {
+            .footer-links { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .footer h4 {
+            margin: 0 0 14px;
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        .footer ul { list-style: none; padding: 0; margin: 0; }
+        .footer li { margin: 8px 0; }
+        .footer a { color: var(--muted-2); font-size: 14px; }
+        .footer a:hover { color: var(--green); }
+
+        .footer-bottom {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--muted-2);
+            font-size: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .footer-bottom { flex-direction: row; }
+        }
+
+        .footer-bottom a:hover { color: #ffffff; }
+    </style>
+</head>
+<body>
+    {% set root_url = url_for('index') %}
+    {% set safe_next = next_url if next_url is defined else None %}
+    {% set access_next = access_next_url if access_next_url is defined else (root_url ~ '#access') %}
+    {% if safe_next and safe_next != root_url %}
+        {% set login_href = url_for('login', next=safe_next) %}
+        {% set signup_href = url_for('signup', next=safe_next) %}
+    {% else %}
+        {% set login_href = url_for('login') %}
+        {% set signup_href = url_for('signup') %}
+    {% endif %}
+    {% set is_gated = (invite_only or invite_required_for_login) %}
+
+    <div class="bg-layer" aria-hidden="true">
+        <canvas id="particles" class="particles"></canvas>
+    </div>
+    <div class="glow-top" aria-hidden="true"></div>
+    <div class="glow-bottom" aria-hidden="true"></div>
+
+    <div class="content-layer">
+        <nav class="nav" aria-label="Primary">
+            <div class="container nav-inner">
+                <a href="/" class="logo" aria-label="Connact.ai">
+                    <span>Conn</span>
+                    <span class="logo-caret" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                            <defs>
+                                <linearGradient id="caretGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00F2FF" />
+                                    <stop offset="100%" stop-color="#0072FF" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M4 19L12 5L20 19" stroke="url(#caretGradient)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span>ct.ai</span>
+                </a>
+
+                <div class="nav-actions">
+                    <a class="nav-login" href="{{ login_href }}">Login</a>
+                    <a class="btn-primary" href="#access" data-focus="waitlist">Join Waitlist</a>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section id="hero" class="hero">
+                <div id="access" aria-hidden="true"></div>
+                <div class="container">
+                    <h1>
+                        Automate Your <br>
+                        <span class="hero-gradient">Investment Banking</span> <br>
+                        Networking.
+                    </h1>
+                    <p class="hero-subtitle">
+                        The AI agent that finds targets, drafts personalized emails, and manages follow-ups. Stop pasting templates. Start connecting.
+                    </p>
+
+                    {% if message or error or invite_ok %}
+                    <div class="alerts" role="status" aria-live="polite">
+                        {% if message %}
+                        <div class="alert alert-success">{{ message }}</div>
+                        {% endif %}
+                        {% if error %}
+                        <div class="alert alert-error">{{ error }}</div>
+                        {% endif %}
+                        {% if invite_ok %}
+                        <div class="alert">Access is unlocked for this browser. You can log in anytime.</div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="gate-wrap">
+                        <div class="gate" id="access_gate" data-mode="waitlist">
+                            {% if invite_ok %}
+                                <div class="unlock-cta">
+                                    <a class="btn-primary" href="{{ login_href }}">Login</a>
+                                    <a class="btn-secondary" href="{{ signup_href }}">Create account</a>
+                                </div>
+                            {% else %}
+                                <div class="gate-panel gate-panel-waitlist" id="panel_waitlist">
+                                    <form class="gate-form" method="POST" action="/waitlist">
+                                        <input type="hidden" name="next" value="{{ access_next }}">
+                                        <div class="gate-inner">
+                                            <input
+                                                id="waitlist_email"
+                                                class="gate-input"
+                                                type="email"
+                                                name="email"
+                                                placeholder="Enter your email to join waitlist"
+                                                autocomplete="email"
+                                                required
+                                            >
+                                            <button class="gate-submit" type="submit">Join Waitlist</button>
+                                        </div>
+                                    </form>
+                                    <button class="gate-switch" type="button" data-switch="invite">
+                                        Have an invite code? <span class="switch-underline">Enter it here.</span>
+                                    </button>
+                                </div>
+
+                                <div class="gate-panel gate-panel-invite" id="panel_invite" hidden>
+                                    <form class="gate-form" method="POST" action="/access">
+                                        <input type="hidden" name="next" value="{{ access_next }}">
+                                        <div class="gate-inner">
+                                            <input
+                                                id="invite_code"
+                                                class="gate-input invite-input"
+                                                type="text"
+                                                name="invite_code"
+                                                placeholder="Enter invite code"
+                                                autocomplete="off"
+                                                {% if invite_required_for_login %}required{% endif %}
+                                            >
+                                            <button class="gate-submit" type="submit">Unlock Access</button>
+                                        </div>
+                                    </form>
+                                    <button class="gate-back" type="button" data-switch="waitlist">Back to Waitlist</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="scroll-hint" aria-hidden="true">
+                        <div class="scroll-mouse">
+                            <div class="scroll-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container feature-stack">
+                    <div class="feature-row">
+                        <div class="feature-copy">
+                            <h2>Find Your <br><span class="accent-green">Perfect Targets.</span></h2>
+                            <p>Stop guessing who to email. Our engine analyzes thousands of profiles to find your highest-probability connections.</p>
+                            <div class="bullets">
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">🎓</span></div>
+                                    <div>
+                                        <h4>Alumni Filter</h4>
+                                        <p>Instantly identify bankers from your university or target firm.</p>
+                                    </div>
+                                </div>
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">🔥</span></div>
+                                    <div>
+                                        <h4>High Response Match</h4>
+                                        <p>AI scores targets based on likelihood to reply based on historical engagement.</p>
+                                    </div>
+                                </div>
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">✅</span></div>
+                                    <div>
+                                        <h4>Verified Contact Data</h4>
+                                        <p>Access accurate email addresses, no bounce-backs or dead ends.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-media">
+                            <div class="media-shell">
+                                <div class="media-glow" style="background: rgba(46, 202, 127, 0.45);" aria-hidden="true"></div>
+                                <div class="media-card">
+                                    <div class="media-label">
+                                        <span class="ping" aria-hidden="true"></span>
+                                        <span>Live Demo</span>
+                                    </div>
+                                    <div class="media-placeholder" aria-hidden="true"></div>
+                                    <div class="media-vignette" aria-hidden="true"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row reverse">
+                        <div class="feature-copy">
+                            <h2>Draft Personalized <br><span class="accent-purple">Emails in Seconds.</span></h2>
+                            <p>Write like a human, scale like an agent. Our AI researches every prospect to craft a hook they can't ignore.</p>
+                            <div class="bullets">
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">🧠</span></div>
+                                    <div>
+                                        <h4>Context Aware</h4>
+                                        <p>Scans recent deals and news to write relevant hooks that actually get read.</p>
+                                    </div>
+                                </div>
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">👔</span></div>
+                                    <div>
+                                        <h4>Human Tone</h4>
+                                        <p>Generated emails sound like you, not a robot. Maintains executive presence.</p>
+                                    </div>
+                                </div>
+                                <div class="bullet">
+                                    <div class="bullet-icon" aria-hidden="true"><span style="font-size: 22px;">📥</span></div>
+                                    <div>
+                                        <h4>Spam Proof</h4>
+                                        <p>Formatting and content optimized to land directly in the Primary Inbox.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-media">
+                            <div class="media-shell">
+                                <div class="media-glow" style="background: rgba(123, 97, 255, 0.45);" aria-hidden="true"></div>
+                                <div class="media-card purple">
+                                    <div class="media-label">
+                                        <span class="pulse-dot" aria-hidden="true"></span>
+                                        <span>AI Agent</span>
+                                    </div>
+                                    <div class="media-placeholder" aria-hidden="true"></div>
+                                    <div class="media-vignette" aria-hidden="true"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="testimonials">
+                <div class="container">
+                    <h2>The Recruitment Secret Weapon.</h2>
+                </div>
+
+                <div class="marquee" aria-label="Testimonials">
+                    <div class="marquee-track animate-marquee" id="marquee_track">
+                        {% set testimonials = [
+                            {'quote': 'Saved me 10 hours a week on sourcing. Got a coffee chat at GS within 2 days.', 'author': 'Junior at Wharton'},
+                            {'quote': 'The personalization is insane. Bankers actually replied to my first email.', 'author': 'Senior at LSE'},
+                            {'quote': 'Connact is a cheat code for recruiting. I finally cleared my backlog.', 'author': 'MBA Candidate'},
+                            {'quote': 'Simple, effective, and way better than copy-pasting templates.', 'author': 'Analyst Intern'},
+                        ] %}
+                        {% for _ in range(3) %}
+                            {% for t in testimonials %}
+                                <div class="testimonial-card glass">
+                                    <div class="stars" aria-hidden="true">★★★★★</div>
+                                    <p class="quote">"{{ t.quote }}"</p>
+                                    <div class="author">
+                                        <span class="author-dot" aria-hidden="true"></span>
+                                        <span>{{ t.author }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="logo-playground">
+                <div class="container" style="max-width: 64rem;">
+                    <h2>Logo Playground</h2>
+                    <p>Experiment with our brand motion language.</p>
+
+                    <div class="playground-card">
+                        <div class="logo-stage" id="logo_stage">
+                            <span class="logo" style="font-size: 48px;">
+                                <span>Conn</span>
+                                <span class="logo-caret" aria-hidden="true" style="width: 1.1em; height: 1em;">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                        <defs>
+                                            <linearGradient id="caretGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#00F2FF" />
+                                                <stop offset="100%" stop-color="#0072FF" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M4 19L12 5L20 19" stroke="url(#caretGradient2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                                <span>ct.ai</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="anim-buttons" aria-label="Logo animations">
+                        <button class="anim-btn" type="button" data-anim="pulse">Pulse</button>
+                        <button class="anim-btn" type="button" data-anim="bounce">Bounce</button>
+                        <button class="anim-btn" type="button" data-anim="spin">Spin Slow</button>
+                        <button class="anim-btn" type="button" data-anim="wiggle">Wiggle</button>
+                        <button class="anim-btn" type="button" data-anim="glow">Glow</button>
+                        <button class="anim-btn anim-btn-reset" type="button" data-anim="none">Reset</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <div class="logo" style="font-size: 18px;">
+                            <span>Conn</span>
+                            <span class="logo-caret" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                                    <defs>
+                                        <linearGradient id="caretGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#00F2FF" />
+                                            <stop offset="100%" stop-color="#0072FF" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M4 19L12 5L20 19" stroke="url(#caretGradient3)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span>ct.ai</span>
+                        </div>
+                        <p style="color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 20rem; margin: 14px 0 0;">
+                            Automating professional connections for the next generation of finance leaders. Built for efficiency, designed for results.
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div>
+                            <h4>Product</h4>
+                            <ul>
+                                <li><a href="#hero">Features</a></li>
+                                <li><a href="#hero">How it works</a></li>
+                                <li><a href="#hero">Pricing</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Company</h4>
+                            <ul>
+                                <li><a href="#hero">About</a></li>
+                                <li><a href="#hero">Blog</a></li>
+                                <li><a href="#hero">Careers</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Social</h4>
+                            <ul>
+                                <li><a href="#hero">LinkedIn</a></li>
+                                <li><a href="#hero">Twitter</a></li>
+                                <li><a href="#hero">Instagram</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <div>© {{ 2026 }} Connact.ai Inc. All rights reserved.</div>
+                    <div style="display: flex; gap: 18px;">
+                        <a href="#hero">Privacy Policy</a>
+                        <a href="#hero">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function () {
+            const canvas = document.getElementById('particles');
+            if (!(canvas instanceof HTMLCanvasElement)) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let particles = [];
+            let mouse = { x: -100, y: -100 };
+            const connectionDistance = 180;
+            const mouseInfluence = 150;
+
+            function getParticleCount() {
+                return window.innerWidth < 768 ? 40 : 100;
+            }
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                init();
+            }
+
+            function init() {
+                const count = getParticleCount();
+                particles = [];
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.4,
+                        size: Math.random() * 1.5 + 0.5,
+                    });
+                }
+            }
+
+            function draw() {
+                if (prefersReducedMotion) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    const dxMouse = mouse.x - p.x;
+                    const dyMouse = mouse.y - p.y;
+                    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                    if (distMouse < mouseInfluence) {
+                        p.x += dxMouse * 0.005;
+                        p.y += dyMouse * 0.005;
+                    }
+
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < connectionDistance) {
+                            const opacity = (1 - dist / connectionDistance) * 0.4;
+                            ctx.strokeStyle = `rgba(123, 97, 255, ${opacity})`;
+                            ctx.lineWidth = 1.2;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            resize();
+            draw();
+        })();
+
+        (function () {
+            const gate = document.getElementById('access_gate');
+            if (!gate) return;
+            const panelWaitlist = document.getElementById('panel_waitlist');
+            const panelInvite = document.getElementById('panel_invite');
+            const inviteInput = document.getElementById('invite_code');
+            const waitlistInput = document.getElementById('waitlist_email');
+
+            const hasError = {{ 'true' if error else 'false' }};
+            const hasMessage = {{ 'true' if message else 'false' }};
+
+            function setMode(mode) {
+                gate.setAttribute('data-mode', mode);
+                if (panelWaitlist) panelWaitlist.hidden = mode !== 'waitlist';
+                if (panelInvite) panelInvite.hidden = mode !== 'invite';
+
+                const el = (mode === 'invite') ? inviteInput : waitlistInput;
+                if (el && el.focus) {
+                    window.setTimeout(() => {
+                        try { el.focus({ preventScroll: true }); } catch (_) { el.focus(); }
+                    }, 0);
+                }
+            }
+
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                if (!(target instanceof Element)) return;
+                const btn = target.closest('[data-switch]');
+                if (btn) {
+                    const mode = btn.getAttribute('data-switch') || 'waitlist';
+                    setMode(mode);
+                    return;
+                }
+                const link = target.closest('a[href^="#"]');
+                if (!link) return;
+                const href = link.getAttribute('href') || '';
+                if (href !== '#access') return;
+                const focus = link.getAttribute('data-focus') || '';
+                if (focus === 'invite') setMode('invite');
+                if (focus === 'waitlist') setMode('waitlist');
+            });
+
+            if (hasError) {
+                setMode('invite');
+            } else {
+                setMode('waitlist');
+            }
+
+            if (window.location.hash === '#access' || hasMessage || hasError) {
+                try {
+                    document.getElementById('access')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (_) {}
+            }
+        })();
+
+        (function () {
+            const stage = document.getElementById('logo_stage');
+            if (!stage) return;
+
+            const buttons = Array.from(document.querySelectorAll('[data-anim]'));
+            const map = {
+                none: '',
+                pulse: 'anim-pulse',
+                bounce: 'anim-bounce',
+                spin: 'anim-spin',
+                wiggle: 'anim-wiggle',
+                glow: 'anim-glow',
+            };
+
+            function setAnim(key) {
+                stage.className = 'logo-stage';
+                const cls = map[key] || '';
+                if (cls) stage.classList.add(cls);
+
+                buttons.forEach((btn) => {
+                    if (!(btn instanceof HTMLElement)) return;
+                    const isActive = btn.getAttribute('data-anim') === key;
+                    btn.classList.toggle('is-active', isActive);
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                if (!(target instanceof Element)) return;
+                const btn = target.closest('[data-anim]');
+                if (!btn) return;
+                const key = btn.getAttribute('data-anim') || 'none';
+                setAnim(key);
+            });
+
+            setAnim('none');
+        })();
+    </script>
+</body>
+</html>
